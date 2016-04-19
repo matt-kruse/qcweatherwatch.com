@@ -1,0 +1,192 @@
+<html>
+
+<head>
+	<title>Quad City Weather Watch</title>
+	<meta name="title" content="Quad City Weather Watch" />
+	<meta name="description" content="Weather reports, forecasts, radar, event/school cancellations, and road conditions for the Quad Cities - all in one place!" />
+	<meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg" />
+	<link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<script src="jquery.js"></script>
+<style>
+html, body {
+	font-family:arial;
+	background-color:#224E97;
+}
+h1 {
+	text-decoration:underline;
+}
+h3 {
+	text-decoration:underline;
+	text-align:center;
+	margin:5px;
+	padding:0;
+}
+.title, .subhead { color:white; }
+#layout {
+	border:1px solid black;
+	border-collapse:collapse;
+}
+#layout td {
+	vertical-align:top;
+	border:1px solid #ccc;
+	padding:5px;
+	background-color:#eee;
+}
+div.kwqc p {
+	text-align:left;
+}
+.kwqc_closings {
+	border-collapse:collapse;
+}
+.kwqc_closings td, .kwqc_closings th {
+	font-size:9px;
+	border:1px solid #ccc;
+}
+.block {
+	
+	max-width:700px;
+	float:left;
+	border:1px solid #ccc;
+}
+</style>
+<script>
+$(function() {
+	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector=.entry-content%3Ep@html',function(data) {
+		if (data && data.content) {
+			var html = '';
+			for (var i=0; i<data.content.length; i++) {
+				if (data.content[i].indexOf('Chief')>=0) { break; }
+				html += '<p>'+data.content[i];+'</p>';
+			}
+			$('#wqad-forecast').html( html );
+		}
+	});
+	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://kwqc.com/2014/12/03/first-alert-forecast/&selector=.entry-content%3Ep@html',function(data) {
+		if (data && data.content) {
+			var html = '';
+			for (var i=0; i<data.content.length; i++) {
+				if (data.content[i].indexOf('smart phone')>=0) { break; }
+				html += '<p>'+data.content[i];+'</p>';
+			}
+			$('#kwqc-forecast').html( html );
+		}
+	});
+});
+</script>
+</head>
+
+<body>
+<img src="icon.png" style="float:left;height:96px;margin-right:20px;">
+<h1 class="title">QC Weather Watch</h1>
+<div class="subhead">Your one-stop place for all the Quad Cities weather news you need to know!</div>
+<div style="clear:both;"></div>
+
+<div style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;">
+
+	<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe> 
+	<div style="clear:both;"></div>
+	<div class="block">
+		<h3><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
+		<div id="wqad-forecast" style="height:450px;width:550px;overflow:auto;border:1px solid black;"></div>
+		<br>
+		<img src="http://cache.ltvcms.com/wqad/5day.jpg" style="width:500px;">
+		<br>
+		<img src="http://cache.ltvcms.com/wqad/Regional_Radar_640.gif" style="width:500px;">
+		<br>
+		Cancellations:<br><iframe height="300" width="550" src="http://cache.ltvcms.com/wqad/Closings/ClosingsDisplay.html"></iframe>
+	</div>
+	<div class="block">
+		<h3><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
+		<div id="kwqc-forecast" class="kwqc" style="border:1px solid black;width:550px;height:450px;overflow:auto;"></div>
+		<img src="http://wx.kwqc.com/weather/7dayFULL.jpg">
+		<br>
+		<img src="http://wx.kwqc.com/weather/radar_loop4.JPG">
+		<br>
+		<img src="http://wx.kwqc.com/weather/watchwarnFULL.JPG">
+		<br>
+		<!--
+		<div class="kwqc" style="border:1px solid black;width:550px;height:300px;overflow:auto;font-size:80%;">
+			<b>School Closings:</b><br>
+			<?
+			$xml = simplexml_load_string(file_get_contents("http://www.kwqc.org/news/Closings.xml"));
+			if ($xml) {
+				?>
+				<table border="0" class="kwqc_closings" cellspacing="0" cellpadding="1">
+				<thead>
+					<tr><th>Name</th><th>Posted</th><th>Status</th></tr>
+				</thead>
+				<tbody>
+				<?
+				foreach ($xml->Closing as $closing) {
+					?><tr><td><?=$closing->Name1?></td><td style="white-space:nowrap;"><nowrap><?=$closing->UpdateTime?></nowrap></td><td><?=$closing->Status?>&nbsp;&nbsp;&nbsp;&nbsp;<?=$closing->Comments?></td></tr><?
+				}
+				?>
+				</tbody>
+				</table>
+				<?
+			}
+			else {
+				print "None";
+			}
+			?>
+			<br><br>
+			<b>Business Closings:</b><br>
+			<?
+			$xml = simplexml_load_string(file_get_contents("http://www.kwqc.org/news/BizClosings.xml"));
+			if ($xml) {
+				?>
+				<table border="0" class="kwqc_closings" cellspacing="0" cellpadding="1">
+				<thead>
+					<tr><th>Name</th><th>Posted</th><th>Status</th></tr>
+				</thead>
+				<tbody>
+				<?
+				foreach ($xml->Closing as $closing) {
+					?><tr><td><?=$closing->Name1?></td><td style="white-space:nowrap;"><nowrap><?=$closing->UpdateTime?></nowrap></td><td><?=$closing->Status?>&nbsp;&nbsp;&nbsp;&nbsp;<?=$closing->Comments?></td></tr><?
+				}
+				?>
+				</tbody>
+				</table>
+				<?
+			}
+			else {
+				print "None";
+			}
+			?>
+		</div>
+		-->
+	</div>
+	<div style="clear:both;">
+	<img src="http://www.weather.gov/images/dvn/WxStory/FileL.png" style="max-width:575px;">
+	<br>
+	
+	<h1>Iowa Road Conditions</h1>
+	<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
+
+	<h1>Illinois Road Conditions</h1>
+	<img src="http://apps.dot.illinois.gov/winterroadconditions/images/wrcimage.jpg">
+
+	</div>
+</div>
+
+<!--
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28287853-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+-->
+
+</body>
+</html>
+
+
