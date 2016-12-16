@@ -62,7 +62,7 @@ $(function() {
 			$('#wqad-forecast').html( html );
 		}
 	});
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://kwqc.com/2014/12/03/first-alert-forecast/&selector='+encodeURIComponent(".entry-content-wrap>div>p")+'@html',function(data) {
+	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://kwqc.com/2014/12/03/first-alert-forecast/&selector='+encodeURIComponent(".entry-content-wrap>p")+'@html',function(data) {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
