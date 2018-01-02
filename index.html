@@ -72,6 +72,16 @@ $(function() {
 			$('#kwqc-forecast').html( html );
 		}
 	});
+	$('.closings').each(function(i,el) {
+		var url = el.getAttribute('src');
+		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector=h4,ul@html', function(data) {
+			var html = '<div><b>'+data.content[0]+'</b></div>';
+			if (data.content.length>1) {
+				html += '<div><ul>'+data.content[1]+'</ul></div>';
+			}
+			el.innerHTML+=html;
+		});
+	});
 });
 </script>
 </head>
@@ -94,7 +104,13 @@ $(function() {
 		<br>
 		<img src="https://newcdn.tribtv.com/wqad/Regional_Radar_640.gif" style="width:500px;">
 		<br>
-		Cancellations:<br><iframe height="300" width="550" src="http://cache.ltvcms.com/wqad/Closings/ClosingsDisplay.html"></iframe>
+		Cancellations:
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>
+		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>
 	</div>
 	<div class="block">
 		<h3><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
