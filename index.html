@@ -36,12 +36,21 @@ h3 {
 div.kwqc p {
 	text-align:left;
 }
-.kwqc_closings {
+#kwqc_closings table {
 	border-collapse:collapse;
 }
-.kwqc_closings td, .kwqc_closings th {
-	font-size:9px;
+#kwqc_closings h3 {
+	font-size:11px;
+}
+#kwqc_closings th {
+	background-color:#ccc;
+}
+#kwqc_closings td, #kwqc_closings th {
+	font-size:12px;
 	border:1px solid #ccc;
+}
+.closings {
+	font-size:12px;
 }
 .block {
 	
@@ -80,6 +89,17 @@ $(function() {
 				html += '<div><ul>'+data.content[1]+'</ul></div>';
 			}
 			el.innerHTML+=html;
+		});
+	});
+	$('*[src][selector]').each(function(i,el) {
+		var url = el.getAttribute('src');
+		var selector = el.getAttribute('selector');
+		var remove = el.getAttribute('remove');
+		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector='+encodeURIComponent(selector)+'@html', function(data) {
+			el.innerHTML=data.content.join("<br>");
+			if (remove) {
+				$(remove,el).remove();
+			}
 		});
 	});
 });
@@ -121,6 +141,8 @@ $(function() {
 		<br>
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/watchwarnFULL.JPG" style="width:500px;">
 		<br>
+		Cancellations:<br>
+		<div id="kwqc_closings" src="http://www.kwqc.com/weather/closings" selector="section" remove=">div,>p,>ul,>a,>b,small"></div>
 	</div>
 	<div style="clear:both;">
 	<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png" style="max-width:575px;">
