@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 $.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector=' + encodeURIComponent('.entry-content>div:not([class]), .entry-content>p+p') + '@html', function (data) {
   if (data && data.content) {
     var html = '';

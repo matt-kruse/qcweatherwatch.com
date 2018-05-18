@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack --config webpack.config.js",
+    "build": "webpack",
     "predeploy": "echo 'hey there'",
     "deploy": "echo hello"
   },
