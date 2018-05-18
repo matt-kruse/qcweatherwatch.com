@@ -5,6 +5,7 @@
   "repository": "https://github.com/mtliendo/qcweatherwatch.com.git",
   "author": "Michael Liendo <model3volution@gmail.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "webpack --config webpack.config.js",
     "predeploy": "echo 'hey there'",
