@@ -1,20 +1,30 @@
 import $ from 'jquery'
+import {kwqc, wqad} from './weather-constants'
 
-$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector=' + encodeURIComponent('.entry-content>div:not([class]), .entry-content>p+p') + '@html', function (data) {
-  if (data && data.content) {
-    var html = '';
-    for (var i = 0; i < data.content.length; i++) {
-      if (data.content[i].indexOf('Chief') >= 0) {
-        break;
-      }
-      html += '<p>' + data.content[i]; + '</p>';
+function scrapeWeather(endpoint, searchCriteria) {
+  $.get(endpoint + encodeURIComponent(searchCriteria) + '@html')
+  .done(function(data = {}) {
+    buildHTML(data.content)
+  })
+}
+
+scrapeWeather(wqad.scrapeLink, wqad.searchCriteria)
+
+
+
+function buildHTML(content) {
+  var html = '';
+  for (var i = 0; i < content.length; i++) {
+    if (content[i].indexOf('Chief') >= 0) {
+      break;
     }
-    $('#wqad-forecast').html(html);
+    html += '<p>' + content[i]; + '</p>';
   }
-});
+  $('#wqad-forecast').html(html);
+}
 
-$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://www.kwqc.com/weather/&selector=' + encodeURIComponent("#wxAccordion_forecast .media-body") + '@html', function (data) {
-  if (data && data.content) {
+$.get( kwqc.scrapeLink + encodeURIComponent("#wxAccordion_forecast .media-body") + '@html', function (data = {}) {
+  if (data.content) {
     var html = '';
     for (var i = 0; i < data.content.length; i++) {
       if (data.content[i].indexOf('smart phone') >= 0) {

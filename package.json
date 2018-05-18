@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build:watch": "webpack --watch",
     "predeploy": "echo 'hey there'",
     "deploy": "echo hello"
   },
