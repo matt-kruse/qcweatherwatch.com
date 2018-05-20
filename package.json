@@ -7,13 +7,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build:watch": "webpack --watch",
+    "build:watch": "webpack --watch --mode=production --display-modules",
     "predeploy": "echo 'hey there'",
     "deploy": "echo hello"
   },
-  "dependencies": {
-    "jquery": "^3.3.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gh-pages": "^1.1.0",
     "webpack": "^4.8.3",
