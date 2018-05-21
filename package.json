@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build:watch": "webpack --watch --mode=production --display-modules",
+    "build": "webpack --mode=production",
+    "build:watch": "webpack --watch --mode=development --display-modules",
     "predeploy": "echo 'hey there'",
     "deploy": "echo hello"
   },

@@ -11,7 +11,7 @@ function scrapeWeather({scrapeLink, searchCriteria, stopWord, htmlLocationName})
 function buildHTML(content, stopWord, placeInHTML) {
   let html = ''
   content.every(function(paragraph) {
-    const atEnd = !paragraph.startsWith(stopWord)
+    const atEnd = !paragraph.includes(stopWord)
 
     return atEnd ? html += '<p>' + paragraph + '</p>': atEnd
   })
