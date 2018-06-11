@@ -1,0 +1,21 @@
+{
+  "name": "qcweatherwatch.com",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/mtliendo/qcweatherwatch.com.git",
+  "author": "Michael Liendo <model3volution@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:watch": "webpack --watch --mode=development --display-modules",
+    "predeploy": "echo 'hey there'",
+    "deploy": "echo hello"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gh-pages": "^1.1.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3"
+  }
+}

@@ -4,110 +4,14 @@
 	<title>Quad City Weather Watch</title>
 	<meta name="title" content="Quad City Weather Watch" />
 	<meta name="description" content="Weather reports, forecasts, radar, event/school cancellations, and road conditions for the Quad Cities - all in one place!" />
-	<meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg" />
-	<link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico" />
+	<meta property="og:image" content="../images/banner.jpg" />
+	<link rel="shortcut icon" href="../images/favicon.ico" />
+	<link rel="stylesheet" href="./main.css">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<script src="jquery.js"></script>
-<style>
-html, body {
-	font-family:arial;
-	background-color:#224E97;
-}
-h1 {
-	text-decoration:underline;
-}
-h3 {
-	text-decoration:underline;
-	text-align:center;
-	margin:5px;
-	padding:0;
-}
-.title, .subhead { color:white; }
-#layout {
-	border:1px solid black;
-	border-collapse:collapse;
-}
-#layout td {
-	vertical-align:top;
-	border:1px solid #ccc;
-	padding:5px;
-	background-color:#eee;
-}
-div.kwqc p {
-	text-align:left;
-}
-#kwqc_closings table {
-	border-collapse:collapse;
-}
-#kwqc_closings h3 {
-	font-size:11px;
-}
-#kwqc_closings th {
-	background-color:#ccc;
-}
-#kwqc_closings td, #kwqc_closings th {
-	font-size:12px;
-	border:1px solid #ccc;
-}
-.closings {
-	font-size:12px;
-}
-.block {
-	
-	max-width:700px;
-	float:left;
-	border:1px solid #ccc;
-}
-</style>
-<script>
-$(function() {
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector='+encodeURIComponent('.entry-content>div:not([class]), .entry-content>p+p')+'@html',function(data) {
-		if (data && data.content) {
-			var html = '';
-			for (var i=0; i<data.content.length; i++) {
-				if (data.content[i].indexOf('Chief')>=0) { break; }
-				html += '<p>'+data.content[i];+'</p>';
-			}
-			$('#wqad-forecast').html( html );
-		}
-	});
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://www.kwqc.com/weather/&selector='+encodeURIComponent("#wxAccordion_forecast .media-body")+'@html',function(data) {
-		if (data && data.content) {
-			var html = '';
-			for (var i=0; i<data.content.length; i++) {
-				if (data.content[i].indexOf('smart phone')>=0) { break; }
-				html += '<p>'+data.content[i];+'</p>';
-			}
-			$('#kwqc-forecast').html( html );
-		}
-	});
-	$('.closings').each(function(i,el) {
-		var url = el.getAttribute('src');
-		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector=h4,ul@html', function(data) {
-			var html = '<div><b>'+data.content[0]+'</b></div>';
-			if (data.content.length>1) {
-				html += '<div><ul>'+data.content[1]+'</ul></div>';
-			}
-			el.innerHTML+=html;
-		});
-	});
-	$('*[src][selector]').each(function(i,el) {
-		var url = el.getAttribute('src');
-		var selector = el.getAttribute('selector');
-		var remove = el.getAttribute('remove');
-		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector='+encodeURIComponent(selector)+'@html', function(data) {
-			el.innerHTML=data.content.join("<br>");
-			if (remove) {
-				$(remove,el).remove();
-			}
-		});
-	});
-});
-</script>
 </head>
 
 <body>
-<img src="icon.png" style="float:left;height:96px;margin-right:20px;">
+<img src="../images/icon.png" style="float:left;height:96px;margin-right:20px;">
 <h1 class="title">QC Weather Watch</h1>
 <div class="subhead">Your one-stop place for all the Quad Cities weather news you need to know!</div>
 <div style="clear:both;"></div>
@@ -156,7 +60,7 @@ $(function() {
 
 	</div>
 </div>
-
+<script src="bundle.js"></script>
 </body>
 </html>
 
