@@ -63,6 +63,16 @@ div.kwqc p {
 img {
   max-width:98vw !important;
 }
+.overflow { overflow:visible; height:auto !important; }
+@media screen and (min-width:1200px) {
+  .overflow {
+    height:450px;
+    overflow:auto;
+  }
+}
+@media screen and (max-width:600px) {
+  #forecast_embed { display:none; }
+}
 </style>
 <script>
 $(function() {
@@ -123,7 +133,7 @@ $(function() {
 	<div style="clear:both;"></div>
 	<div class="block">
 		<h3><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
-		<div id="wqad-forecast" style="height:450px;width:550px;max-width:95vw;overflow:auto;border:1px solid black;"></div>
+		<div id="wqad-forecast" class="overflow" style="width:550px;max-width:95vw;border:1px solid black;"></div>
 		<br>
 		<img src="https://newcdn.tribtv.com/wqad/5day.jpg" style="width:500px;">
 		<br>
@@ -139,7 +149,7 @@ $(function() {
 	</div>
 	<div class="block">
 		<h3><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
-		<div id="kwqc-forecast" class="kwqc" style="border:1px solid black;width:550px;height:450px;overflow:auto;max-width:95vw;"></div>
+		<div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;width:550px;max-width:95vw;"></div>
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/7dayFULL.jpg" style="width:500px;">
 		<br>
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/dopplergif.gif" style="width:500px;">
