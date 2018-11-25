@@ -7,11 +7,13 @@
 	<meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg" />
 	<link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
 	<script src="jquery.js"></script>
 <style>
 html, body {
 	font-family:arial;
 	background-color:#224E97;
+  width:100vw !important;
 }
 h1 {
 	text-decoration:underline;
@@ -54,9 +56,12 @@ div.kwqc p {
 }
 .block {
 	
-	max-width:700px;
+	max-width:95vw !important;
 	float:left;
 	border:1px solid #ccc;
+}
+img {
+  max-width:98vw !important;
 }
 </style>
 <script>
@@ -112,13 +117,13 @@ $(function() {
 <div class="subhead">Your one-stop place for all the Quad Cities weather news you need to know!</div>
 <div style="clear:both;"></div>
 
-<div style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;">
+<div style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
 
 	<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe> 
 	<div style="clear:both;"></div>
 	<div class="block">
 		<h3><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
-		<div id="wqad-forecast" style="height:450px;width:550px;overflow:auto;border:1px solid black;"></div>
+		<div id="wqad-forecast" style="height:450px;width:550px;max-width:95vw;overflow:auto;border:1px solid black;"></div>
 		<br>
 		<img src="https://newcdn.tribtv.com/wqad/5day.jpg" style="width:500px;">
 		<br>
@@ -134,7 +139,7 @@ $(function() {
 	</div>
 	<div class="block">
 		<h3><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
-		<div id="kwqc-forecast" class="kwqc" style="border:1px solid black;width:550px;height:450px;overflow:auto;"></div>
+		<div id="kwqc-forecast" class="kwqc" style="border:1px solid black;width:550px;height:450px;overflow:auto;max-width:95vw;"></div>
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/7dayFULL.jpg" style="width:500px;">
 		<br>
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/dopplergif.gif" style="width:500px;">
@@ -152,8 +157,8 @@ $(function() {
 	<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
 
 	<h1>Illinois Road Conditions</h1>
-	<img src="http://apps.dot.illinois.gov/winterroadconditions/images/wrcimage.jpg">
-
+  <b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
+  <br><br>
 	</div>
 </div>
 
