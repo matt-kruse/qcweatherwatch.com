@@ -76,7 +76,7 @@ img {
 </style>
 <script>
 $(function() {
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector='+encodeURIComponent('.entry-content>div:not([class]), .entry-content>p+p')+'@html',function(data) {
+	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector='+encodeURIComponent('.entry-content>div:not([class]), .entry-content>p')+'@html',function(data) {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
@@ -162,13 +162,20 @@ $(function() {
 	<div style="clear:both;">
 	<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png" style="max-width:575px;">
 	<br>
-	
+  
 	<h1>Iowa Road Conditions</h1>
 	<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
 
 	<h1>Illinois Road Conditions</h1>
   <b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
   <br><br>
+
+  <h1>Traffic/Road Condition Cameras</h1>
+  <img src="http://204.8.38.202/qc_snapshot/qctv08.jpg"><br>
+  <img src="http://204.8.38.202/qc_snapshot/qctv10.jpg"><br>
+  <img src="http://204.8.38.202/qc_snapshot/qctv03.jpg"><br>
+	
+
 	</div>
 </div>
 
