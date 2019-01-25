@@ -115,9 +115,39 @@ $(function() {
 			if (remove) {
 				$(remove,el).remove();
 			}
+			if (el.id && typeof post_process[el.id]==="function") {
+              post_process[el.id](el);
+			}
 		});
 	});
 });
+var post_process = {
+  'kwqc_closings': function(el) {
+    $('table',el).each(function(i,t) {
+      sortTable(t);
+	});
+  }
+};
+function sortTable(table) {
+  var rows, switching=true, i, x, y, shouldSwitch;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < (rows.length - 1); i++) {
+      shouldSwitch = false;
+      x = rows[i].cells[0];
+      y = rows[i+1].cells[0];
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
 </script>
 </head>
 
@@ -128,8 +158,7 @@ $(function() {
 <div style="clear:both;"></div>
 
 <div style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
-
-	<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe> 
+	<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
 	<div style="clear:both;"></div>
 	<div class="block">
 		<h3><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
