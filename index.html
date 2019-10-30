@@ -80,17 +80,21 @@ $(function() {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
-				if (data.content[i].indexOf('Meteorologist')>=0) { break; }
+				if (/meteorologist|chief/i.test(data.content[i] || "")) { break; }
 				html += '<p>'+data.content[i];+'</p>';
 			}
 			$('#wqad-forecast').html( html );
+			$('#wqad-forecast img[data-lazy-src]').each(function(i,o) {
+				o.style.width = "500px";
+				o.src = o.getAttribute('data-lazy-src');
+			});
 		}
 	});
 	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://www.kwqc.com/weather/&selector='+encodeURIComponent("#wxAccordion_forecast .media-body")+'@html',function(data) {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
-				if (data.content[i].indexOf('smart phone')>=0) { break; }
+				if (/smart phone/i.test(data.content[i])) { break; }
 				html += '<p>'+data.content[i];+'</p>';
 			}
 			$('#kwqc-forecast').html( html );
