@@ -107,8 +107,34 @@ $(function() {
 			if (data.content.length>1) {
 				html += '<div><ul>'+data.content[1]+'</ul></div>';
 			}
-			el.innerHTML+=html;
+			el.innerHTML+=html
+			$(el).find('.pstatus').each(function(i,s) {
+				if ("Closed" == s.innerHTML) {
+					s.innerHTML = '<b style="color:red;">Closed</b>';
+				}
+			});
 		});
+	});
+	// KWQC Closings
+	$.get('https://s3.amazonaws.com/grayfilestore-kwqc/closingsData/closings_KWQC.json?c=n&r=1501206919', function(data) {
+		try {
+			var rows = data[0].record;
+			rows = rows.sort(function(a,b) {
+				if (a.state!=b.state) return a.state < b.state;
+				return a.forced_category_name < b.forced_category_name;
+			});
+			var h = "<table><tbody>";
+			for (var i=0; i<rows.length; i++) {
+				var r = rows[i];
+				h += "<tr><td>"+r.state+"</td><td>"+r.forced_category_name+"</td><td>"+r.forced_organization_name+"</td><td>"+r.forced_status_name+"<br>"+r.comments_line1+"</td></tr>";
+			}
+			h += "</tbody></table>";
+			h=h.replace(/Closed/gi,'<b style="color:red;">Closed</b>');
+			$('#kwqc_closings').html(h);
+
+		} catch(e) {
+			$('#kwqc_closings').html("Error loading cancelations.");
+		}
 	});
 	$('*[src][selector]').each(function(i,el) {
 		var url = el.getAttribute('src');
@@ -126,13 +152,7 @@ $(function() {
 	});
 });
 var post_process = {
-  'kwqc_closings': function(el) {
-    $('table',el).each(function(i,t) {
-      try {
-        sortTable(t);
-      } catch(e) {}
-	});
-  }
+
 };
 function sortTable(table) {
   var rows, switching=true, i, x, y, shouldSwitch;
@@ -192,7 +212,7 @@ function sortTable(table) {
 		<img src="http://gray.ftp.clickability.com/kwqcwebftp/watchwarnFULL.JPG" style="width:500px;">
 		<br>
 		Cancellations:<br>
-		<div id="kwqc_closings" src="http://www.kwqc.com/weather/closings" selector="section" remove=">div,>p,>ul,>a,>b,small"></div>
+		<div id="kwqc_closings"></div>
 	</div>
 	<div style="clear:both;">
 	<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png" style="max-width:575px;">
