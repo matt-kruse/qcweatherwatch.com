@@ -7,16 +7,14 @@
 	<meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg" />
 	<link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
 	<script src="jquery.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
 html, body {
 	font-family:arial;
 	background-color:#224E97;
-  width:100vw !important;
-}
-h1 {
-	text-decoration:underline;
+	padding:3px;
 }
 h3 {
 	text-decoration:underline;
@@ -24,16 +22,22 @@ h3 {
 	margin:5px;
 	padding:0;
 }
-.title, .subhead { color:white; }
-#layout {
-	border:1px solid black;
-	border-collapse:collapse;
-}
-#layout td {
-	vertical-align:top;
-	border:1px solid #ccc;
+.station {
+	background-color:#224E97;
+	font-weight:bold;
 	padding:5px;
-	background-color:#eee;
+}
+.station a {
+	color:white !important;
+	text-decoration:underline;
+}
+.title, .subhead { color:white; }
+.wrap { max-width:1300px; }
+.wrap img {
+	min-width:100%;
+	max-width:100%;
+	width:100%;
+	border-radius:2%;
 }
 div.kwqc p {
 	text-align:left;
@@ -54,24 +58,15 @@ div.kwqc p {
 .closings {
 	font-size:12px;
 }
-.block {
-	
-	max-width:95vw !important;
-	float:left;
-	border:1px solid #ccc;
+.overflow {
+	overflow:visible;
+	height:auto;
 }
-img {
-  max-width:98vw !important;
-}
-.overflow { overflow:visible; height:auto !important; }
-@media screen and (min-width:1200px) {
+@media screen and (min-width:900px) {
   .overflow {
     height:450px;
     overflow:auto;
   }
-}
-@media screen and (max-width:600px) {
-  #forecast_embed { display:none; }
 }
 </style>
 <script>
@@ -183,64 +178,77 @@ function sortTable(table) {
 <div class="subhead">Your one-stop place for all the Quad Cities weather news you need to know!</div>
 <div style="clear:both;"></div>
 
-<div style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
-	<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
-	<div style="clear:both;"></div>
-	<div class="block">
-		<h3><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
-		<div id="wqad-forecast" class="overflow" style="width:550px;max-width:95vw;border:1px solid black;padding:2px;">Loading forecast...</div>
-		<br>
-		<img src="https://newcdn.tribtv.com/wqad/5day.jpg" style="width:500px;">
-		<br>
-		<img src="https://newcdn.tribtv.com/wqad/Regional_Radar_640.gif" style="width:500px;">
-		<br>
-		Cancellations:
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>
-		<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>
+<div class="wrap container-fluid" style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
+	<div class="row d-none d-lg-block">
+		<div class="col">
+			<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
+		</div>
 	</div>
-	<div class="block">
-		<h3><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
-		<div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;width:550px;max-width:95vw;padding:2px;">Loading forecast...</div>
-		<img src="http://gray.ftp.clickability.com/kwqcwebftp/7dayFULL.jpg" style="width:500px;">
-		<br>
-		<img src="http://gray.ftp.clickability.com/kwqcwebftp/dopplergif.gif" style="width:500px;">
-		<br>
-		<img src="http://gray.ftp.clickability.com/kwqcwebftp/watchwarnFULL.JPG" style="width:500px;">
-		<br>
-		Cancellations:<br>
-		<div id="kwqc_closings"></div>
+	<div class="row">
+		<div class="col">
+			<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png">
+		</div>
 	</div>
-	<div style="clear:both;">
-	<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png" style="max-width:575px;">
-	<br>
-  
-	<h1>Iowa Road Conditions</h1>
-	<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
+	<div class="row">
+		<div class="col-12 col-lg-6">
+			<h3 class="station"><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
+			<div id="wqad-forecast" class="overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
+			<img src="https://newcdn.tribtv.com/wqad/5day.jpg">
+			<br>
+			<img src="https://newcdn.tribtv.com/wqad/Regional_Radar_640.gif">
+			<br>
+			Cancellations:
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>
+			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>
+		</div>
+		<div class="col-12 col-lg-6">
+			<h3 class="station"><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
+			<div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
+			<img src="http://gray.ftp.clickability.com/kwqcwebftp/7dayFULL.jpg">
+			<br>
+			<img src="http://gray.ftp.clickability.com/kwqcwebftp/dopplergif.gif">
+			<br>
+			<img src="http://gray.ftp.clickability.com/kwqcwebftp/watchwarnFULL.JPG">
+			<br>
+			Cancellations:<br>
+			<div id="kwqc_closings"></div>
+		</div>
+	</div>
 
-	<h1>Illinois Road Conditions</h1>
-  <b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
-  <br><br>
-
-  <h1>Traffic/Road Condition Cameras</h1>
-	<img src="http://204.8.38.202/qc_snapshot/qctv06.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv04.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv01.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv12.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv19.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv20.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv18.jpg"><br>
-	<img src="http://204.8.38.202/qc_snapshot/qctv21.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3152.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3114.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3190.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3103.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3191.jpg"><br>
-	<img src="http://205.221.66.10/axis/IWZ3576.jpg"><br>
-
+	<div class="row">
+		<div class="col">
+			<h1>Iowa Road Conditions</h1>
+			<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<h1>Illinois Road Conditions</h1>
+			<b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<h1>Traffic/Road Condition Cameras</h1>
+			<img src="http://204.8.38.202/qc_snapshot/qctv06.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv04.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv01.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv12.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv19.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv20.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv18.jpg"><br>
+			<img src="http://204.8.38.202/qc_snapshot/qctv21.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3152.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3114.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3190.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3103.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3191.jpg"><br>
+			<img src="http://205.221.66.10/axis/IWZ3576.jpg"><br>
+		</div>
 	</div>
 </div>
 
