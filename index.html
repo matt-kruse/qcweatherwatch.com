@@ -71,14 +71,14 @@ div.kwqc p {
 </style>
 <script>
 $(function() {
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=http://wqad.com/weather/forecast/&selector='+encodeURIComponent('.entry-content>div:not([class]), .entry-content>p')+'@html',function(data) {
+	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=https://www.wqad.com/article/weather/forecast/moline-quad-cites/526-ca6f0a1a-bf85-4edd-985c-32b7aa12fed4&selector='+encodeURIComponent('article.article>h1,article.article>.article__summary,article.article>.article__body')+'@html',function(data) {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
-				if (/meteorologist|chief/i.test(data.content[i] || "")) { break; }
+				//if (/meteorologist|chief/i.test(data.content[i] || "")) { break; }
 				html += '<p>'+data.content[i];+'</p>';
 			}
-			$('#wqad-forecast').html( html );
+			$('#wqad-forecast').html( html ).find('.cms__embed-related-story').remove();
 			$('#wqad-forecast img[data-lazy-src]').each(function(i,o) {
 				o.style.width = "500px";
 				o.src = o.getAttribute('data-lazy-src');
