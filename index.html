@@ -106,7 +106,7 @@ $(function() {
 	// WQAD Closings
 	proxy('https://www.wqad.com/closings','.closings',function(data) {
 		if (data && data.content) {
-			$('#wqad_closings').html(data.content);
+			$('#wqad_closings').html(data.content.toString());
 		}
 	});
 	// $('.closings').each(function(i,el) {
@@ -178,7 +178,11 @@ $(function() {
 		$('#show_all_webcams').show();
 	}
 	$('#webcams').html(w);
-	$('#all_webcams').html(aw);
+	$('#show_all_webcams').click(function() {
+		$('#all_webcams').html(aw).show();
+		$('#show_all_webcams').remove();
+		return false;
+	});
 
 	// Dynamic content in HTML
 	$('*[src][selector]').each(function(i,el) {
@@ -288,7 +292,7 @@ function sortTable(table) {
 		<div class="col">
 			<h1>Traffic/Road Condition Cameras</h1>
 			<div id="webcams"></div>
-			<div id="show_all_webcams" style="display:none;" onclick="$('#all_webcams').show();$(this).remove();">Show More <span id="webcam_count"></span> Webcams</div>
+			<div id="show_all_webcams" style="display:none;">Show More <span id="webcam_count"></span> Webcams</div>
 			<div id="all_webcams" style="display:none;"></div>
 		</div>
 	</div>
