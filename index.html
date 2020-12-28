@@ -68,6 +68,11 @@ div.kwqc p {
     overflow:auto;
   }
 }
+#show_all_webcams {
+	font-size:xx-large;
+	text-decoration:underline;
+	cursor:pointer;
+}
 </style>
 <script>
 function proxy(url,selector,f) {
@@ -98,21 +103,27 @@ $(function() {
 			$('#kwqc-forecast').html( html );
 		}
 	});
-	$('.closings').each(function(i,el) {
-		var url = el.getAttribute('src');
-		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector=h4,ul@html', function(data) {
-			var html = '<div><b>'+data.content[0]+'</b></div>';
-			if (data.content.length>1) {
-				html += '<div><ul>'+data.content[1]+'</ul></div>';
-			}
-			el.innerHTML+=html
-			$(el).find('.pstatus').each(function(i,s) {
-				if ("Closed" == s.innerHTML) {
-					s.innerHTML = '<b style="color:red;">Closed</b>';
-				}
-			});
-		});
+	// WQAD Closings
+	proxy('https://www.wqad.com/closings','.closings',function(data) {
+		if (data && data.content) {
+			$('#wqad_closings').html(data.content);
+		}
 	});
+	// $('.closings').each(function(i,el) {
+	// 	var url = el.getAttribute('src');
+	// 	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector=h4,ul@html', function(data) {
+	// 		var html = '<div><b>'+data.content[0]+'</b></div>';
+	// 		if (data.content.length>1) {
+	// 			html += '<div><ul>'+data.content[1]+'</ul></div>';
+	// 		}
+	// 		el.innerHTML+=html
+	// 		$(el).find('.pstatus').each(function(i,s) {
+	// 			if ("Closed" == s.innerHTML) {
+	// 				s.innerHTML = '<b style="color:red;">Closed</b>';
+	// 			}
+	// 		});
+	// 	});
+	// });
 	// KWQC Closings
 	$.get('https://s3.amazonaws.com/grayfilestore-kwqc/closingsData/closings_KWQC.json?c=n&r=1501206919', function(data) {
 		try {
@@ -134,6 +145,42 @@ $(function() {
 			$('#kwqc_closings').html("Error loading cancelations.");
 		}
 	});
+	// Traffic Cams
+	var webcams = [
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv06lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv08lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv04lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv09lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv07lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv01lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv12lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv13lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv21lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv20lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv19lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv18lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3195lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3174lb.flv.jpg',
+		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv10lb.flv.jpg',
+	];
+	var w = "";
+	var aw = "";
+	for (var i=0; i<webcams.length; i++) {
+		var p = '<div><img src="'+webcams[i]+'"></div>';
+		if (i<5) {
+			w += p;
+		}
+		else {
+			aw += p;
+		}
+	}
+	if (webcams.length>5) {
+		$('#show_all_webcams').show();
+	}
+	$('#webcams').html(w);
+	$('#all_webcams').html(aw);
+
+	// Dynamic content in HTML
 	$('*[src][selector]').each(function(i,el) {
 		var url = el.getAttribute('src');
 		var selector = el.getAttribute('selector');
@@ -184,7 +231,7 @@ function sortTable(table) {
 <div class="wrap container-fluid" style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
 	<div class="row d-none d-lg-block">
 		<div class="col">
-			<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="http://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
+			<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="https://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
 		</div>
 	</div>
 	<div class="row">
@@ -200,15 +247,14 @@ function sortTable(table) {
 			<br>
 			<img src="https://cdn.tegna-media.com/wqad/weather/Regional_Radar_640.gif">
 			<br>
-			<!--
-			Cancellations:
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>
-			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>
-			-->
+			Closings and Cancellations:
+			<div id="wqad_closings"></div>
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>-->
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>-->
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>-->
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>-->
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>-->
+<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>-->
 		</div>
 		<div class="col-12 col-lg-6">
 			<h3 class="station"><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
@@ -241,8 +287,9 @@ function sortTable(table) {
 	<div class="row">
 		<div class="col">
 			<h1>Traffic/Road Condition Cameras</h1>
-			<p>Updated cameras coming soon...</p>
-			<!--<img src="http://204.8.38.202/qc_snapshot/qctv06.jpg"><br>-->
+			<div id="webcams"></div>
+			<div id="show_all_webcams" style="display:none;" onclick="$('#all_webcams').show();$(this).remove();">Show More <span id="webcam_count"></span> Webcams</div>
+			<div id="all_webcams" style="display:none;"></div>
 		</div>
 	</div>
 </div>
