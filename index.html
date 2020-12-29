@@ -93,12 +93,25 @@ $(function() {
 			});
 		}
 	});
-	proxy('http://www.kwqc.com/weather/','.forecast-teaser.d-md-block>p',function(data) {
+	proxy('http://www.kwqc.com/weather/','script',function(data) {
 		if (data && data.content) {
 			var html = '';
 			for (var i=0; i<data.content.length; i++) {
-				//if (/smart phone/i.test(data.content[i])) { break; }
-				html += '<p>'+data.content[i]+'</p>';
+				var js = data.content[i];
+				if (!/Fusion.contentCache\s*=\s*({[\s\S]*?});/.test(js)) { continue; }
+				console.log("Passed match");
+				try {
+					var o = JSON.parse(RegExp.$1);
+					var content = o['wx-todays-forecast']['{"includeSections":"/weather/forecast"}'].data.content_elements;
+					for (var j=0; j<content.length; j++) {
+						var c = content[j];
+						if (c.type && c.type=="text") {
+							html += '<p>'+c.content+'</p>'
+						}
+					}
+				} catch(e) {
+					console.log(e);
+				}
 			}
 			$('#kwqc-forecast').html( html );
 		}
@@ -124,6 +137,7 @@ $(function() {
 	// 		});
 	// 	});
 	// });
+
 	// KWQC Closings
 	$.get('https://s3.amazonaws.com/grayfilestore-kwqc/closingsData/closings_KWQC.json?c=n&r=1501206919', function(data) {
 		try {
