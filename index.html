@@ -1,243 +1,263 @@
 <html>
 
 <head>
-	<title>Quad City Weather Watch</title>
-	<meta name="title" content="Quad City Weather Watch" />
-	<meta name="description" content="Weather reports, forecasts, radar, event/school cancellations, and road conditions for the Quad Cities - all in one place!" />
-	<meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg" />
-	<link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico" />
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
-	<script src="jquery.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<style>
-html, body {
-	font-family:arial;
-	background-color:#224E97;
-	padding:3px;
-}
-h3 {
-	text-decoration:underline;
-	text-align:center;
-	margin:5px;
-	padding:0;
-}
-.station {
-	background-color:#224E97;
-	font-weight:bold;
-	padding:5px;
-}
-.station a {
-	color:white !important;
-	text-decoration:underline;
-}
-.title, .subhead { color:white; }
-.wrap { max-width:1300px; }
-.wrap img {
-	min-width:100%;
-	max-width:100%;
-	width:100%;
-	border-radius:2%;
-}
-div.kwqc p {
-	text-align:left;
-}
-#kwqc_closings table {
-	border-collapse:collapse;
-}
-#kwqc_closings h3 {
-	font-size:11px;
-}
-#kwqc_closings th {
-	background-color:#ccc;
-}
-#kwqc_closings td, #kwqc_closings th {
-	font-size:12px;
-	border:1px solid #ccc;
-}
-.closings {
-	font-size:12px;
-}
-.overflow {
-	overflow:visible;
-	height:auto;
-}
-@media screen and (min-width:900px) {
-  .overflow {
-    height:450px;
-    overflow:auto;
-  }
-}
-#show_all_webcams {
-	font-size:xx-large;
-	text-decoration:underline;
-	cursor:pointer;
-}
-</style>
-<script>
-function proxy(url,selector,f) {
-	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector='+encodeURIComponent(selector)+'@html', f);
-}
-$(function() {
-	proxy('https://www.wqad.com/article/weather/forecast/moline-davenport-quad-cities-forecast/526-7e9b6b56-59e4-48cb-844b-4987f2b5e204','article.article>h1,article.article>.article__summary,article.article>.article__body>.article__section_type_text',function(data) {
-		if (data && data.content) {
-			var html = '';
-			for (var i=0; i<data.content.length; i++) {
-				if (/meteorologist|chief/i.test(data.content[i] || "")) { break; }
-				html += '<p>'+data.content[i]+'</p>';
-			}
-			$('#wqad-forecast').html( html );
-			$('#wqad-forecast img[data-lazy-src]').each(function(i,o) {
-				o.style.width = "500px";
-				o.src = o.getAttribute('data-lazy-src');
-			});
-		}
-	});
-	proxy('http://www.kwqc.com/weather/','script',function(data) {
-		if (data && data.content) {
-			var html = '';
-			for (var i=0; i<data.content.length; i++) {
-				var js = data.content[i];
-				if (!/Fusion.contentCache\s*=\s*({[\s\S]*?});/.test(js)) { continue; }
-				console.log("Passed match");
-				try {
-					var o = JSON.parse(RegExp.$1);
-					var content = o['wx-todays-forecast']['{"includeSections":"/weather/forecast"}'].data.content_elements;
-					for (var j=0; j<content.length; j++) {
-						var c = content[j];
-						if (c.type && c.type=="text") {
-							html += '<p>'+c.content+'</p>'
-						}
-					}
-				} catch(e) {
-					console.log(e);
-				}
-			}
-			$('#kwqc-forecast').html( html );
-		}
-	});
-	// WQAD Closings
-	proxy('https://www.wqad.com/closings','.closings',function(data) {
-		if (data && data.content) {
-			$('#wqad_closings').html(data.content.toString());
-		}
-	});
-	// $('.closings').each(function(i,el) {
-	// 	var url = el.getAttribute('src');
-	// 	$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector=h4,ul@html', function(data) {
-	// 		var html = '<div><b>'+data.content[0]+'</b></div>';
-	// 		if (data.content.length>1) {
-	// 			html += '<div><ul>'+data.content[1]+'</ul></div>';
-	// 		}
-	// 		el.innerHTML+=html
-	// 		$(el).find('.pstatus').each(function(i,s) {
-	// 			if ("Closed" == s.innerHTML) {
-	// 				s.innerHTML = '<b style="color:red;">Closed</b>';
-	// 			}
-	// 		});
-	// 	});
-	// });
+  <title>Quad City Weather Watch</title>
+  <meta name="title" content="Quad City Weather Watch"/>
+  <meta name="description" content="Weather reports, forecasts, radar, event/school cancellations, and road conditions for the Quad Cities - all in one place!"/>
+  <meta property="og:image" content="http://QCWeatherWatch.com/banner.jpg"/>
+  <link rel="shortcut icon" href="http://QCWeatherWatch.com/favicon.ico"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
+  <script src="jquery.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    html, body {
+      font-family: arial;
+      background-color: #224E97;
+      padding: 3px;
+    }
 
-	// KWQC Closings
-	$.get('https://s3.amazonaws.com/grayfilestore-kwqc/closingsData/closings_KWQC.json?c=n&r=1501206919', function(data) {
-		try {
-			var rows = data[0].record;
-			rows = rows.sort(function(a,b) {
-				if (a.state!=b.state) return a.state < b.state;
-				return a.forced_category_name < b.forced_category_name;
-			});
-			var h = "<table><tbody>";
-			for (var i=0; i<rows.length; i++) {
-				var r = rows[i];
-				h += "<tr><td>"+r.state+"</td><td>"+r.forced_category_name+"</td><td>"+r.forced_organization_name+"</td><td>"+r.forced_status_name+"<br>"+r.comments_line1+"</td></tr>";
-			}
-			h += "</tbody></table>";
-			h=h.replace(/Closed/gi,'<b style="color:red;">Closed</b>');
-			$('#kwqc_closings').html(h);
+    h3 {
+      text-decoration: underline;
+      text-align: center;
+      margin: 5px;
+      padding: 0;
+    }
 
-		} catch(e) {
-			$('#kwqc_closings').html("Error loading cancelations.");
-		}
-	});
-	// Traffic Cams
-	var webcams = [
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv06lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv08lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv04lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv09lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv07lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv01lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv12lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv13lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv21lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv20lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv19lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv18lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3195lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3174lb.flv.jpg',
-		'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv10lb.flv.jpg',
-	];
-	var w = "";
-	var aw = "";
-	for (var i=0; i<webcams.length; i++) {
-		var p = '<div><img src="'+webcams[i]+'"></div>';
-		if (i<5) {
-			w += p;
-		}
-		else {
-			aw += p;
-		}
-	}
-	if (webcams.length>5) {
-		$('#show_all_webcams').show();
-	}
-	$('#webcams').html(w);
-	$('#show_all_webcams').click(function() {
-		$('#all_webcams').html(aw).show();
-		$('#show_all_webcams').remove();
-		return false;
-	});
+    .station {
+      background-color: #224E97;
+      font-weight: bold;
+      padding: 5px;
+    }
 
-	// Dynamic content in HTML
-	$('*[src][selector]').each(function(i,el) {
-		var url = el.getAttribute('src');
-		var selector = el.getAttribute('selector');
-		var remove = el.getAttribute('remove');
-		$.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url='+url+'&selector='+encodeURIComponent(selector)+'@html', function(data) {
-			el.innerHTML=data.content.join("<br>");
-			if (remove) {
-				$(remove,el).remove();
-			}
-			if (el.id && typeof post_process[el.id]==="function") {
-              post_process[el.id](el);
-			}
-		});
-	});
-});
-var post_process = {
+    .station a {
+      color: white !important;
+      text-decoration: underline;
+    }
 
-};
-function sortTable(table) {
-  var rows, switching=true, i, x, y, shouldSwitch;
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-    for (i = 1; i < (rows.length - 1); i++) {
-      shouldSwitch = false;
-      x = rows[i].cells[0];
-      y = rows[i+1].cells[0];
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        shouldSwitch = true;
-        break;
+    .title, .subhead {
+      color: white;
+    }
+
+    .wrap {
+      max-width: 1300px;
+    }
+
+    .wrap img {
+      min-width: 100%;
+      max-width: 100%;
+      width: 100%;
+      border-radius: 2%;
+    }
+
+    div.kwqc p {
+      text-align: left;
+    }
+
+    #kwqc_closings table {
+      border-collapse: collapse;
+    }
+
+    #kwqc_closings h3 {
+      font-size: 11px;
+    }
+
+    #kwqc_closings th {
+      background-color: #ccc;
+    }
+
+    #kwqc_closings td, #kwqc_closings th {
+      font-size: 12px;
+      border: 1px solid #ccc;
+    }
+
+    .closings {
+      font-size: 12px;
+    }
+
+    .overflow {
+      overflow: visible;
+      height: auto;
+    }
+
+    @media screen and (min-width: 900px) {
+      .overflow {
+        height: 450px;
+        overflow: auto;
       }
     }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
+
+    #show_all_webcams {
+      font-size: xx-large;
+      text-decoration: underline;
+      cursor: pointer;
     }
-  }
-}
-</script>
+  </style>
+  <script>
+    function proxy(url, selector, f, f2) {
+      $.get('https://8xd8ar771c.execute-api.us-east-1.amazonaws.com/prod/xray?url=' + url + '&selector=' + encodeURIComponent(selector) + '@html', function (data) {
+        if (f2) {
+          // If two functions are passed, the first iterates over content and accumulates html
+          var html = '';
+          if (data && data.content && data.content.length) {
+            for (var i = 0; i < data.content.length; i++) {
+              html += f((data.content[i] || ''), html);
+            }
+          }
+          // The second function receives the accumulated html
+          f2(html);
+        } else {
+          f(data.content || '');
+        }
+      });
+    }
+
+    $(function () {
+      proxy('https://www.wqad.com/article/weather/forecast/moline-davenport-quad-cities-forecast/526-7e9b6b56-59e4-48cb-844b-4987f2b5e204', 'article.article>h1,article.article>.article__summary,article.article>.article__body>.article__section_type_text', function (chunk) {
+        if (!/meteorologist|chief/i.test(chunk)) {
+          return '<p>' + chunk + '</p>';
+        }
+      }, function (html) {
+        $('#wqad-forecast').html(html);
+        $('#wqad-forecast img[data-lazy-src]').each(function (i, o) {
+          o.style.width = "500px";
+          o.src = o.getAttribute('data-lazy-src');
+        });
+      });
+      proxy('http://www.kwqc.com/weather/', 'script', function (chunk) {
+        if (/Fusion.contentCache\s*=\s*({[\s\S]*?});/.test(chunk)) {
+          try {
+            var o = JSON.parse(RegExp.$1);
+            var content = o['wx-todays-forecast']['{"includeSections":"/weather/forecast"}'].data.content_elements;
+            var h = '';
+            for (var j = 0; j < content.length; j++) {
+              var c = content[j];
+              if (c.type && c.type == "text") {
+                h += '<p>' + c.content + '</p>';
+              }
+            }
+            return h;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        else {
+          return '';
+        }
+      }, function (html) {
+        $('#kwqc-forecast').html(html);
+      });
+
+      // WQAD Closings
+      proxy('https://www.wqad.com/closings', '.closings', function (content) {
+        $('#wqad_closings').html(content.toString());
+        $('.closings__sponsor, .closings__weather-link, .closings__search, .closings__no-results').remove();
+
+      });
+
+      // KWQC Closings
+      $.get('https://s3.amazonaws.com/grayfilestore-kwqc/closingsData/closings_KWQC.json?c=n&r=1501206919', function (data) {
+        try {
+          var prev_type = null;
+          var rows = data[0].record;
+          rows = rows.sort(function (a, b) {
+            if (a.state != b.state) return a.state < b.state;
+            return a.forced_category_name < b.forced_category_name;
+          });
+          var h = "<table><tbody>";
+          for (var i = 0; i < rows.length; i++) {
+            var r = rows[i];
+            if (!prev_type || r.forced_category_name!=prev_type) {
+              h += '<tr><th colspan="3">'+r.forced_category_name+'</th></tr>';
+              prev_type = r.forced_category_name;
+            }
+            h += "<tr><td>" + r.state + "</td><td>" + r.forced_organization_name + "</td><td>" + r.forced_status_name + "<br>" + r.comments_line1 + "</td></tr>";
+          }
+          h += "</tbody></table>";
+          h = h.replace(/Closed/gi, '<b style="color:red;">Closed</b>');
+          $('#kwqc_closings').html(h);
+
+        } catch (e) {
+          $('#kwqc_closings').html("Error loading cancelations.");
+        }
+      });
+
+      // Traffic Cams
+      var webcams = [
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv08lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv01lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv20lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv19lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv18lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3195lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/iwz3174lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv10lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv12lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv13lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv09lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv21lb.flv.jpg'
+      ];
+      var w = "";
+      var aw = "";
+      for (var i = 0; i < webcams.length; i++) {
+        var p = '<div><img src="' + webcams[i] + '"></div>';
+        if (i < 5) {
+          w += p;
+        } else {
+          aw += p;
+        }
+      }
+      if (webcams.length > 5) {
+        $('#show_all_webcams').show();
+      }
+      $('#webcams').html(w);
+      $('#show_all_webcams').click(function () {
+        $('#all_webcams').html(aw).show();
+        $('#show_all_webcams').remove();
+        return false;
+      });
+
+      // Dynamic content in HTML
+      $('*[src][selector]').each(function (i, el) {
+        var url = el.getAttribute('src');
+        var selector = el.getAttribute('selector');
+        var remove = el.getAttribute('remove');
+        proxy(url, selector, function (data) {
+          el.innerHTML = data.content.join("<br>");
+          if (remove) {
+            $(remove, el).remove();
+          }
+          if (el.id && typeof post_process[el.id] === "function") {
+            post_process[el.id](el);
+          }
+        });
+      });
+
+    });
+
+    var post_process = {};
+
+    function sortTable(table) {
+      var rows, switching = true, i, x, y, shouldSwitch;
+      while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+          x = rows[i].cells[0];
+          y = rows[i + 1].cells[0];
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -247,69 +267,67 @@ function sortTable(table) {
 <div style="clear:both;"></div>
 
 <div class="wrap container-fluid" style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
-	<div class="row d-none d-lg-block">
-		<div class="col">
-			<iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="https://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12 col-lg-6">
-			<h3 class="station"><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
-			<div id="wqad-forecast" class="overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
-			<img src="https://cdn.tegna-media.com/wqad/weather/5day.jpg">
-			<br>
-			<img src="https://cdn.tegna-media.com/wqad/weather/Regional_Radar_640.gif">
-			<br>
-			Closings and Cancellations:
-			<div id="wqad_closings"></div>
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>-->
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>-->
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>-->
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>-->
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>-->
-<!--			<div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>-->
-		</div>
-		<div class="col-12 col-lg-6">
-			<h3 class="station"><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
-			<div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
-			<img src="http://webpubcontent.gray.tv/kwqc/weather/7dayFULL.jpg">
-			<br>
-			<img src="https://webpubcontent.gray.tv/kwqc/weather/dopplergif.gif">
-			<br>
-			<img src="https://webpubcontent.gray.tv/kwqc/weather/watchwarnFULL.JPG">
-			<br>
-			<!--
-			Cancellations:<br>
-			<div id="kwqc_closings"></div>
-			-->
-		</div>
-	</div>
+  <div class="row d-none d-lg-block">
+    <div class="col">
+      <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="https://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <h3 class="station"><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
+      <div id="wqad-forecast" class="overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
+      <img src="https://cdn.tegna-media.com/wqad/weather/5day.jpg">
+      <br>
+      <img src="https://cdn.tegna-media.com/wqad/weather/Regional_Radar_640.gif">
+      <br>
+      Closings and Cancellations:
+      <div id="wqad_closings"></div>
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_schools.html"></div>-->
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_biz.html"></div>-->
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_gov.html"></div>-->
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_other.html"></div>-->
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>-->
+      <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>-->
+    </div>
+    <div class="col-12 col-lg-6">
+      <h3 class="station"><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
+      <div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
+      <img src="http://webpubcontent.gray.tv/kwqc/weather/7dayFULL.jpg">
+      <br>
+      <img src="https://webpubcontent.gray.tv/kwqc/weather/dopplergif.gif">
+      <br>
+      <img src="https://webpubcontent.gray.tv/kwqc/weather/watchwarnFULL.JPG">
+      <br>
+      Cancellations:<br>
+      <div id="kwqc_closings"></div>
+    </div>
+  </div>
 
-	<div class="row">
-		<div class="col">
-			<h1>Iowa Road Conditions</h1>
-			<img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<h1>Illinois Road Conditions</h1>
-			<b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<h1>Traffic/Road Condition Cameras</h1>
-			<div id="webcams"></div>
-			<div id="show_all_webcams" style="display:none;">Show More <span id="webcam_count"></span> Webcams</div>
-			<div id="all_webcams" style="display:none;"></div>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col">
+      <h1>Iowa Road Conditions</h1>
+      <img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h1>Illinois Road Conditions</h1>
+      <b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h1>Traffic/Road Condition Cameras</h1>
+      <div id="webcams"></div>
+      <div id="show_all_webcams" style="display:none;">Show More <span id="webcam_count"></span> Webcams</div>
+      <div id="all_webcams" style="display:none;"></div>
+    </div>
+  </div>
 </div>
 
 </body>
