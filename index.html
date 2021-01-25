@@ -161,8 +161,8 @@
           var prev_type = null;
           var rows = data[0].record;
           rows = rows.sort(function (a, b) {
-            if (a.state != b.state) return a.state < b.state;
-            return a.forced_category_name < b.forced_category_name;
+            if (a.forced_category_name != b.forced_category_name) return a.forced_category_name < b.forced_category_name;
+            return a.state < b.state;
           });
           var h = "<table><tbody>";
           for (var i = 0; i < rows.length; i++) {
