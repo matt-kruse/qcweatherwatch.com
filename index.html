@@ -128,11 +128,13 @@
           return '<p>' + chunk + '</p>';
         }
       }, function (html) {
+        html = html.replace(/undefined/g,'');
         $('#wqad-forecast').html(html);
         $('#wqad-forecast img[data-lazy-src]').each(function (i, o) {
           o.style.width = "500px";
           o.src = o.getAttribute('data-lazy-src');
         });
+        $('#wqad-forecast a[href="https://apps.apple.com/us/app/wqad-storm-track-8-weather/id368499412"]').parent().remove();
       });
       proxy('http://www.kwqc.com/weather/', 'script', function (chunk) {
         if (/Fusion.contentCache\s*=\s*({[\s\S]*?});/.test(chunk)) {
@@ -142,7 +144,7 @@
             var h = '';
             for (var j = 0; j < content.length; j++) {
               var c = content[j];
-              if (c.type && c.type == "text") {
+              if (c.type && c.type == "text" && c.content!="undefined") {
                 h += '<p>' + c.content + '</p>';
               }
             }
@@ -276,11 +278,11 @@
 <div style="clear:both;"></div>
 
 <div class="wrap container-fluid" style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
-  <div class="row d-none d-lg-block">
-    <div class="col">
-      <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="https://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>
-    </div>
-  </div>
+<!--  <div class="row d-none d-lg-block">-->
+<!--    <div class="col">-->
+<!--      <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="600" src="https://forecast.io/embed/#lat=41.492601&lon=-90.445976&name=the Quad Cities"></iframe>-->
+<!--    </div>-->
+<!--  </div>-->
   <div class="row">
     <div class="col">
       <img src="http://www.weather.gov/images/dvn/wxstory/Tab2FileL.png">
