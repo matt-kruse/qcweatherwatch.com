@@ -102,6 +102,11 @@
       text-decoration: underline;
       cursor: pointer;
     }
+
+    a {
+        color:white !important;
+        text-decoration: underline;
+    }
   </style>
   <script>
     function proxy(url, selector, f, f2) {
@@ -196,37 +201,37 @@
 
       // Traffic Cams
       var webcams = [
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv32lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv34flb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv31lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv38lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv08lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv01lb.flv.jpg',
-        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv20lb.flv.jpg',
+        // 'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv20lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv19lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv18lb.flv.jpg',
         'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv10lb.flv.jpg',
-        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv12lb.flv.jpg',
-        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv13lb.flv.jpg',
-        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv21lb.flv.jpg'
+        // 'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv12lb.flv.jpg',
+        // 'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv13lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv21lb.flv.jpg',
+        'https://iowadotsnapshot.us-east-1.skyvdn.com/thumbs/qctv09lb.flv.jpg',
+        'https://webpubcontent.gray.tv/kwqc/weather/towercam.JPG'
       ];
       var w = "";
       var aw = "";
       for (var i = 0; i < webcams.length; i++) {
         var p = '<div><img src="' + webcams[i] + '"></div>';
-        if (i < 5) {
-          w += p;
-        } else {
-          aw += p;
-        }
+        aw += p;
       }
-      if (webcams.length > 5) {
-        $('#show_all_webcams').show();
-      }
-      $('#webcams').html(w);
-      $('#show_all_webcams').click(function () {
-        $('#all_webcams').html(aw).show();
-        $('#show_all_webcams').remove();
-        return false;
-      });
+      // if (webcams.length > 5) {
+      //   $('#show_all_webcams').show();
+      // }
+      $('#webcams').html(aw);
+      // $('#show_all_webcams').click(function () {
+      //   $('#all_webcams').html(aw).show();
+      //   $('#show_all_webcams').remove();
+      //   return false;
+      // });
 
       // Dynamic content in HTML
       $('*[src][selector]').each(function (i, el) {
@@ -276,6 +281,8 @@
 <h1 class="title">QC Weather Watch</h1>
 <div class="subhead">Your one-stop place for all the Quad Cities weather news you need to know!</div>
 <div style="clear:both;"></div>
+<span style="color:white;">Jump To: </span><a href="#wqad">WQAD</a> <a href="#kwqc">KWQC</a> <a href="#roads">Roads</a> <a href="#cameras">Cameras</a>
+<br>
 
 <div class="wrap container-fluid" style="background-color:#eee;clear:both;display:inline-block;border-radius:10px;padding-left:3px;">
 <!--  <div class="row d-none d-lg-block">-->
@@ -289,11 +296,13 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-6" id="wqad">
       <h3 class="station"><a href="http://www.wqad.com/weather/" target="_blank">WQAD</a></h3>
       <div id="wqad-forecast" class="overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
       <img src="https://cdn.tegna-media.com/wqad/weather/5day.jpg">
       <br>
+        <img src="https://cdn.tegna-media.com/wqad/weather/14_day.jpg">
+        <br>
       <img src="https://cdn.tegna-media.com/wqad/weather/Regional_Radar_640.gif">
       <br>
       Closings and Cancellations:
@@ -305,7 +314,7 @@
       <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_church.html"></div>-->
       <!--      <div class="closings" src="http://s3.amazonaws.com/wqadclosings/wqad_dc.html"></div>-->
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-6" id="kwqc">
       <h3 class="station"><a href="http://www.kwqc.com/weather" target="_blank">KWQC</a></h3>
       <div id="kwqc-forecast" class="kwqc overflow" style="border:1px solid black;padding:2px;">Loading forecast...</div>
       <img src="http://webpubcontent.gray.tv/kwqc/weather/7dayFULL.jpg">
@@ -314,12 +323,14 @@
       <br>
       <img src="https://webpubcontent.gray.tv/kwqc/weather/watchwarnFULL.JPG">
       <br>
+        <img src="https://webpubcontent.gray.tv/kwqc/weather/feelslike.jpg">
+        <br>
       Cancellations:<br>
       <div id="kwqc_closings"></div>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" id="roads">
     <div class="col">
       <h1>Iowa Road Conditions</h1>
       <img src="http://mesonet.agron.iastate.edu/data/iaroads.png"><br>
@@ -328,15 +339,16 @@
   <div class="row">
     <div class="col">
       <h1>Illinois Road Conditions</h1>
-      <b>Inline road conditions unavailable.</b><br>View the IL road conditions map at <a href="http://www.gettingaroundillinois.com/winterconditions/">http://www.gettingaroundillinois.com/winterconditions/</a>
+        <iframe style="width:100%;height:85vh;" src="https://idot.maps.arcgis.com/apps/webappviewer/index.html?id=aecf2a45940444d3b3cf206da9af803c"></iframe>
+      <br><a href="http://www.gettingaroundillinois.com/winterconditions/" target="_blank">Open IL Road Conditions in a new window</a>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <h1>Traffic/Road Condition Cameras</h1>
+      <h1 id="cameras">Traffic/Road Condition Cameras</h1>
       <div id="webcams"></div>
-      <div id="show_all_webcams" style="display:none;">Click To Show More <span id="webcam_count"></span> Webcams</div>
-      <div id="all_webcams" style="display:none;"></div>
+<!--      <div id="show_all_webcams" style="display:none;">Click To Show More <span id="webcam_count"></span> Webcams</div>-->
+<!--      <div id="all_webcams" style="display:none;"></div>-->
     </div>
   </div>
 </div>
